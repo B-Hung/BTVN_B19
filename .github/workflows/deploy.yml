@@ -36,17 +36,7 @@ jobs:
             
             echo "==> Reset to origin/main"
             git reset --hard origin/main
-            
-            echo "==>Compile Java code to .jar on Server"
-            cd ASM
-            if [ -f "./mvnw" ]; then
-              chmod +x mvnw
-              ./mvnw clean package -DskipTests
-            else
-              mvn clean package -DskipTests
-            fi
-            cd ..
-            
+          
             echo "==>Restart system with Docker Compose"
             docker compose down
             docker compose up -d --build
