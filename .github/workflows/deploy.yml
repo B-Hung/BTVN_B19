@@ -25,32 +25,12 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 24700
-          script_stop: true
           script: |
-            set -e
-            
-            echo "==> Di chuyen vao thu muc goc du an"
             cd /root/hung-compose-app/E-COMMERCEWEBSITE-main
-            
-            echo "==> Cap nhat ma nguon moi tu GitHub"
-            git fetch origin
-            git reset --hard origin/main
-            
-            echo "==> Chuyen vao thu muc ASM de tu dong bien dich Java 21"
+            git fetch origin && git reset --hard origin/main
             cd ASM
-            if [ -f "./mvnw" ]; then
-              chmod +x mvnw
-              ./mvnw clean package -DskipTests
-            else
-              mvn clean package -DskipTests
-            fi
-            
-            echo "==> Quay lai thu muc goc chua file docker-compose.yml"
+            mvn clean package -DskipTests
             cd ..
-            
-            echo "==> Khoi dong lai cac container bang Docker Compose"
             docker compose down
             docker compose up -d --build
-            
-            echo "==> Kiem tra ket qua nghiem thu"
             docker compose ps
