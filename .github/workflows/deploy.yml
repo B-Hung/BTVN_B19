@@ -13,26 +13,34 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
+      - name: Executing remote ssh commands using ssh-key
+        uses: appleboy/ssh-action@v1.0.3
         with:
-          java-version: '21'
-          distribution: 'temurin'
-          cache: maven
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 24700
+          script: |
+            set -e
+            
+            echo "==> Di chyen vao thu muc"
+            cd /root/hung-compose-app/E-COMMERCEWEBSITE-main
+            
+            echo "==> Dong bo ma nguon"
+            git pull origin main
+            
+            echo "==> Chuyen vao thu muc ASM de compile Java 21"
+            cd ASM
+            if [ -f "./mvnw" ]; then
+              chmod +x mvnw
+              ./mvnw clean package -DskipTests
+            else
+              mvn clean package -DskipTests
+            fi
+            
+            echo "==> Quay lai thu muc goc de khoi dong lai he thong"
+            cd ..
+            docker compose down
+            docker compose up -d --build
 
-      - name: Build Java Application with Maven
-        run: |
-          cd ASM
-          chmod +x mvnw || true
-          mvn clean package -DskipTests
-
-      - name: Build and Run Application with Docker Compose
-        run: |
-          docker compose up -d --build
-
-      - name: Verify Containers Status
-        run: |
-          sleep 15
-          docker compose ps
-          docker compose logs --tail=20
 
