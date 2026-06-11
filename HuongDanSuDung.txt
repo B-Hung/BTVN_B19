@@ -1,0 +1,31 @@
+Huong dan chay du an
+- Du an yeu cau jdk 21
+- Database: SQL Server
+
+Buoc 1: Mo SQL Server va open file LENUP.sql
+
+Buoc 2: Mo du an ASM bang Spring Tool Suite (STS) hoac IntelliJ - uu tien sts
+
+Buoc 3: Vao file application.properties - cau hinh lai username va password theo sql cua ban
+					- cau hinh lai client-id va client-secrect theo google va facebook cua ban - muc dich la de dang nhap bang gg & fb (neu chua co thi vao 							https://console.cloud.google.com/ doi voi google va https://developers.facebook.com/ doi voi facebook de dang ky)
+					
+Buoc 4: Chay du an bang cach Chuot phai vao du an -> Run as -> Spring Boot App -> truy cap http://localhost:8080/home 
+
+Buoc 5: Vao trang dang nhap -> dang nhap tai khoan admin -> Quan ly danh muc (CRUD Danh muc) -> Quan ly san pham (CRUD San pham) -> Quan ly bien the (CRUD Bien the)
+
+Buoc 6: Dang xuat ve trang User va test cac chuc nang cua User 
+
+Buoc 7: Chuc nang Chatbot AI ban co the vao tudongchat.com de dang ky tai khoan moi va lay script ho cung cap va bo vao du an, luc nay ban co the huan luyen con bot luon nhe, neu khong muon thi cu de Nguyen nhu vay vi tui minh da huan luyen con chatbot nay ok het roi
+
+PS: Chuc nang thanh toan bang VNPay bat buoc phai deploy du an len Hosting nen o moi truong local se khong su dung duoc nhe!
+	- Neu ban da deploy thanh cong len Hosting roi thi vao application.properties va VNPayConfig (trong controller) cau hinh lai vnpay.tmn-code va vnpay.hash-secret theo nhu thong tin ma vnpay cung cap cho ban (neu chua co thi vao https://sandbox.vnpayment.vn/devreg/ de dang ky - dang ky xong vnpay se gui thong tin ve email)
+	- vnpay.return-url thi ban cau hinh lai thanh ten mien cua website ban dang ky nhe
+
+Thong tin tai khoan:
+ - ADMIN: username: admin
+	  password: 123456
+
+ - STAFF: username: staff1
+	  password: password123
+
+Tran trong!
