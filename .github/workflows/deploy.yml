@@ -24,7 +24,7 @@ jobs:
             set -e
             
             echo "==> Di chyen vao thu muc"
-            cd ~/hung-compose-app/E-COMMERCEWEBSITE-main
+            cd /root/hung-compose-app/E-COMMERCEWEBSITE-main
             
             echo "==> Dong bo ma nguon"
             git pull origin main
