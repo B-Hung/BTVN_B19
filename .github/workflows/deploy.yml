@@ -1,9 +1,13 @@
-name: Deploy App
+name: Deploy th_fire production
 
 on:
   push:
     branches:
       - main
+
+concurrency:
+  group: deploy-thfire-production
+  cancel-in-progress: true
 
 jobs:
   deploy:
@@ -23,17 +27,30 @@ jobs:
           port: 24700
           script_stop: true
           script: |
-            echo "==> Go to project"
+            set -e
+            
+            echo "==> Di chuyen vao thu muc goc du an"
             cd /root/hung-compose-app/E-COMMERCEWEBSITE-main
             
-            echo "==> Current path"
-            pwd
+            echo "==> Cap nhat ma nguon moi tu GitHub"
+            git fetch origin
+            git reset --hard origin/main
             
-            echo "==>Restart system with Docker Compose"
+            echo "==> Chuyen vao thu muc ASM de tu dong bien dich Java 21"
+            cd ASM
+            if [ -f "./mvnw" ]; then
+              chmod +x mvnw
+              ./mvnw clean package -DskipTests
+            else
+              mvn clean package -DskipTests
+            fi
+            
+            echo "==> Quay lai thu muc goc chua file docker-compose.yml"
+            cd ..
+            
+            echo "==> Khoi dong lai cac container bang Docker Compose"
             docker compose down
             docker compose up -d --build
             
-            echo "==>Verify system status"
+            echo "==> Kiem tra ket qua nghiem thu"
             docker compose ps
-            docker compose logs --tail=20
-            curl -I http://localhost:8089 || curl -I http://127.0.0.1:8089
