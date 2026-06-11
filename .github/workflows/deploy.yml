@@ -8,28 +8,36 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Executing remote ssh commands using ssh-key
+      - name: Deploy to server via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 24700
+          script_stop: true
           script: |
             set -e
             
-            echo "==> Di chyen vao thu muc"
+            echo "==> Go to project"
             cd /root/hung-compose-app/E-COMMERCEWEBSITE-main
             
-            echo "==> Dong bo ma nguon"
-            git pull origin main
+            echo "==> Current path"
+            pwd
             
-            echo "==> Chuyen vao thu muc ASM de compile Java 21"
+            echo "==> Fetch latest code"
+            git fetch origin
+            
+            echo "==> Reset to origin/main"
+            git reset --hard origin/main
+            
+            echo "==>Compile Java code to .jar on Server"
             cd ASM
             if [ -f "./mvnw" ]; then
               chmod +x mvnw
@@ -37,10 +45,16 @@ jobs:
             else
               mvn clean package -DskipTests
             fi
-            
-            echo "==> Quay lai thu muc goc de khoi dong lai he thong"
             cd ..
+            
+            echo "==>Restart system with Docker Compose"
             docker compose down
             docker compose up -d --build
+            
+            echo "==>Verify system status"
+            docker compose ps
+            docker compose logs --tail=20
+            curl -I http://localhost:8089 || curl -I http://127.0.0.1:8089
+
 
 
