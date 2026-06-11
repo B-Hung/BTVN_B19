@@ -23,7 +23,7 @@ jobs:
             set -e
 
             echo "==> Di chuyen vao thu muc"
-            cd ~/hung-compose-app/E-COMMERCEWEBSITE-main/ASM
+            cd /root/hung-compose-app/E-COMMERCEWEBSITE-main
 
             echo "==> Dong bo ma nguon"
             git pull origin main
