@@ -29,12 +29,6 @@ jobs:
             echo "==> Current path"
             pwd
             
-            echo "==> Fetch latest code"
-            git fetch origin
-            
-            echo "==> Reset to origin/main"
-            git reset --hard origin/main
-          
             echo "==>Restart system with Docker Compose"
             docker compose down
             docker compose up -d --build
@@ -43,6 +37,3 @@ jobs:
             docker compose ps
             docker compose logs --tail=20
             curl -I http://localhost:8089 || curl -I http://127.0.0.1:8089
-
-
-
