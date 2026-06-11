@@ -23,8 +23,6 @@ jobs:
           port: 24700
           script_stop: true
           script: |
-            set -e
-            
             echo "==> Go to project"
             cd /root/hung-compose-app/E-COMMERCEWEBSITE-main
             
