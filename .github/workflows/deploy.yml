@@ -19,7 +19,8 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 24700
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
           script: |
             set -e
             
@@ -32,3 +33,7 @@ jobs:
             echo "==> Khoi dong lai he thong"
             docker compose down
             docker compose up -d --build
+
+            echo "==> Verifying container status..."
+            sleep 5
+            docker compose ps
